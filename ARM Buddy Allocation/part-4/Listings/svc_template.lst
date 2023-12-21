@@ -1,0 +1,233 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             |.text|, CODE, READONLY, ALIGN=
+2
+    2 00000000                 THUMB
+    3 00000000         
+    4 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    5 00000000         ; System Call Table
+    6 00000000 20007B00 
+                       SYSTEMCALLTBL
+                               EQU              0x20007B00
+    7 00000000 00000000 
+                       SYS_EXIT
+                               EQU              0x0         ; address 20007B00
+    8 00000000 00000001 
+                       SYS_MALLOC
+                               EQU              0x1         ; address 20007B04
+    9 00000000 00000002 
+                       SYS_FREE
+                               EQU              0x2         ; address 20007B08
+   10 00000000         
+   11 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   12 00000000         ; System Call Table Initialization
+   13 00000000                 EXPORT           _systemcall_table_init
+   14 00000000         _systemcall_table_init
+   15 00000000 480E            LDR              r0, = SYSTEMCALLTBL
+   16 00000002         
+   17 00000002         ; Initialize SYSTEMCALLTBL[0] = _sys_exit
+   18 00000002 490F            LDR              r1, = _sys_exit
+   19 00000004 6001            STR              r1, [r0]
+   20 00000006         
+   21 00000006         ; Initialize_SYSTEMCALLTBL[1] = _sys_malloc
+   22 00000006         ; add your code here
+   23 00000006         ; your code may be of 2 to 6 lines
+   24 00000006         
+   25 00000006         ; Initialize_SYSTEMCALLTBL[2] = _sys_free
+   26 00000006         ; add your code here
+   27 00000006         ; your code may be of 2 to 6 lines
+   28 00000006         
+   29 00000006 4770            BX               lr
+   30 00000008         
+   31 00000008         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   32 00000008         ; System Call Table Jump Routine
+   33 00000008         ; this is the function that will be callsed by SVC
+   34 00000008                 EXPORT           _systemcall_table_jump
+   35 00000008         _systemcall_table_jump
+   36 00000008 F8DF B030       LDR              r11, = SYSTEMCALLTBL ; load the
+                                                             starting address o
+                                                            f SYSTEMCALLTBL
+   37 0000000C 46BA            MOV              r10, r7     ; copy the system c
+                                                            all number into r10
+                                                            
+   38 0000000E EA4F 0A8A       LSL              r10, #0x2   ; system call numbe
+                                                            r * 4
+   39 00000012         ; complete the rest of the code
+   40 00000012         ; your code may be of 4 to 8 lines
+   41 00000012         
+   42 00000012 4770            BX               lr          ; return to SVC_Han
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+                                                            dler
+   43 00000014         
+   44 00000014         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   45 00000014         ; System Call 
+   46 00000014         ; provided for you to use
+   47 00000014         
+   48 00000014         _sys_exit
+   49 00000014 B500            PUSH             {lr}        ; save lr
+   50 00000016 47D8            BLX              r11
+   51 00000018 F85D EB04       POP              {lr}        ; resume lr
+   52 0000001C 4770            BX               lr
+   53 0000001E         
+   54 0000001E         _sys_malloc
+   55 0000001E                 IMPORT           _kalloc
+   56 0000001E F8DF B024       LDR              r11, = _kalloc
+   57 00000022 B500            PUSH             {lr}        ; save lr
+   58 00000024 47D8            BLX              r11         ; call the _kalloc 
+                                                            function 
+   59 00000026 F85D EB04       POP              {lr}        ; resume lr
+   60 0000002A 4770            BX               lr
+   61 0000002C         
+   62 0000002C         _sys_free
+   63 0000002C                 IMPORT           _kfree
+   64 0000002C F8DF B018       LDR              r11, = _kfree
+   65 00000030 B500            PUSH             {lr}        ; save lr
+   66 00000032 47D8            BLX              r11         ; call the _kfree f
+                                                            unction 
+   67 00000034 F85D EB04       POP              {lr}        ; resume lr
+   68 00000038 4770            BX               lr
+   69 0000003A         
+   70 0000003A                 END
+              00 00 20007B00 
+              00000000 
+              00000000 
+              00000000 
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --depend=.
+\objects\svc_template.d -o.\objects\svc_template.o -I.\RTE\_Target_1 -I"C:\Prog
+ram Files\Keil\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include" -I"C:\Program Files
+\Keil\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129" --predefine="__EVAL 
+SETA 1" --predefine="__UVISION_VERSION SETA 526" --predefine="_RTE_ SETA 1" --p
+redefine="TM4C129XNCZAD SETA 1" --list=.\listings\svc_template.lst svc_template
+.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.text 00000000
+
+Symbol: .text
+   Definitions
+      At line 1 in file svc_template.s
+   Uses
+      None
+Comment: .text unused
+_sys_exit 00000014
+
+Symbol: _sys_exit
+   Definitions
+      At line 48 in file svc_template.s
+   Uses
+      At line 18 in file svc_template.s
+Comment: _sys_exit used once
+_sys_free 0000002C
+
+Symbol: _sys_free
+   Definitions
+      At line 62 in file svc_template.s
+   Uses
+      None
+Comment: _sys_free unused
+_sys_malloc 0000001E
+
+Symbol: _sys_malloc
+   Definitions
+      At line 54 in file svc_template.s
+   Uses
+      None
+Comment: _sys_malloc unused
+_systemcall_table_init 00000000
+
+Symbol: _systemcall_table_init
+   Definitions
+      At line 14 in file svc_template.s
+   Uses
+      At line 13 in file svc_template.s
+Comment: _systemcall_table_init used once
+_systemcall_table_jump 00000008
+
+Symbol: _systemcall_table_jump
+   Definitions
+      At line 35 in file svc_template.s
+   Uses
+      At line 34 in file svc_template.s
+Comment: _systemcall_table_jump used once
+6 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+SYSTEMCALLTBL 20007B00
+
+Symbol: SYSTEMCALLTBL
+   Definitions
+      At line 6 in file svc_template.s
+   Uses
+      At line 15 in file svc_template.s
+      At line 36 in file svc_template.s
+
+SYS_EXIT 00000000
+
+Symbol: SYS_EXIT
+   Definitions
+      At line 7 in file svc_template.s
+   Uses
+      None
+Comment: SYS_EXIT unused
+SYS_FREE 00000002
+
+Symbol: SYS_FREE
+   Definitions
+      At line 9 in file svc_template.s
+   Uses
+      None
+Comment: SYS_FREE unused
+SYS_MALLOC 00000001
+
+Symbol: SYS_MALLOC
+   Definitions
+      At line 8 in file svc_template.s
+   Uses
+      None
+Comment: SYS_MALLOC unused
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+External symbols
+
+_kalloc 00000000
+
+Symbol: _kalloc
+   Definitions
+      At line 55 in file svc_template.s
+   Uses
+      At line 56 in file svc_template.s
+Comment: _kalloc used once
+_kfree 00000000
+
+Symbol: _kfree
+   Definitions
+      At line 63 in file svc_template.s
+   Uses
+      At line 64 in file svc_template.s
+Comment: _kfree used once
+2 symbols
+349 symbols in table

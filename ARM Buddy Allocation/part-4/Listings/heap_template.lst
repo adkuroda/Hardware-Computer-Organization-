@@ -1,0 +1,225 @@
+
+
+
+ARM Macro Assembler    Page 1 
+
+
+    1 00000000                 AREA             |.text|, CODE, READONLY, ALIGN=
+2
+    2 00000000                 THUMB
+    3 00000000         
+    4 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    5 00000000         ; System Call Table
+    6 00000000 20001000 
+                       HEAP_TOP
+                               EQU              0x20001000
+    7 00000000 20004FE0 
+                       HEAP_BOT
+                               EQU              0x20004FE0
+    8 00000000 00004000 
+                       MAX_SIZE
+                               EQU              0x00004000  ; 16KB = 2^14
+    9 00000000 00000020 
+                       MIN_SIZE
+                               EQU              0x00000020  ; 32B  = 2^5
+   10 00000000         
+   11 00000000 20006800 
+                       MCB_TOP EQU              0x20006800  ; 2^10B = 1K Space
+   12 00000000 20006BFE 
+                       MCB_BOT EQU              0x20006BFE
+   13 00000000 00000002 
+                       MCB_ENT_SZ
+                               EQU              0x00000002  ; 2B per entry
+   14 00000000 00000200 
+                       MCB_TOTAL
+                               EQU              512         ; 2^9 = 512 entries
+                                                            
+   15 00000000         
+   16 00000000 FFFFFFFF 
+                       INVALID EQU              -1          ; an invalid id
+   17 00000000         
+   18 00000000         ;
+   19 00000000         ; Each MCB Entry
+   20 00000000         ; FEDCBA9876543210
+   21 00000000         ; 00SSSSSSSSS0000U     S bits are used for Heap size, U=
+                       1 Used U=0 Not Used
+   22 00000000         
+   23 00000000         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   24 00000000         ; Memory Control Block Initialization
+   25 00000000         ; void _kinit( )
+   26 00000000         ; this routine must be called from Reset_Handler in star
+                       tup_TM4C129.s
+   27 00000000         ; before you invoke main( ) in driver_keil
+   28 00000000                 EXPORT           _kinit
+   29 00000000         _kinit
+   30 00000000         ; *********************** MY CODE GOES HERE ************
+                       ************
+   31 00000000         ; you must correctly set the value of each MCB block
+   32 00000000         ; complete your code
+   33 00000000 4770            BX               lr
+   34 00000002         
+   35 00000002         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   36 00000002         ; Kernel Memory Allocation
+
+
+
+ARM Macro Assembler    Page 2 
+
+
+   37 00000002         ; void* _k_alloc( int size )
+   38 00000002                 EXPORT           _kalloc
+   39 00000002         _kalloc
+   40 00000002         ; *********************** MY CODE GOES HERE ************
+                       ************
+   41 00000002         ; complete your code
+   42 00000002         ; return value should be saved into r0
+   43 00000002 4770            BX               lr
+   44 00000004         
+   45 00000004         ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                       ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   46 00000004         ; Kernel Memory De-allocation
+   47 00000004         ; void *_kfree( void *ptr )
+   48 00000004                 EXPORT           _kfree
+   49 00000004         _kfree
+   50 00000004         ; *********************** MY CODE GOES HERE ************
+                       ************
+   51 00000004         ; complete your code
+   52 00000004         ; return value should be saved into r0
+   53 00000004 4770            BX               lr
+   54 00000006         
+   55 00000006                 END
+Command Line: --debug --xref --diag_suppress=9931 --cpu=Cortex-M4.fp --depend=.
+\objects\heap_template.d -o.\objects\heap_template.o -I.\RTE\_Target_1 -I"C:\Pr
+ogram Files\Keil\ARM\PACK\ARM\CMSIS\5.8.0\CMSIS\Core\Include" -I"C:\Program Fil
+es\Keil\ARM\PACK\Keil\TM4C_DFP\1.1.0\Device\Include\TM4C129" --predefine="__EVA
+L SETA 1" --predefine="__UVISION_VERSION SETA 526" --predefine="_RTE_ SETA 1" -
+-predefine="TM4C129XNCZAD SETA 1" --list=.\listings\heap_template.lst heap_temp
+late.s
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Relocatable symbols
+
+.text 00000000
+
+Symbol: .text
+   Definitions
+      At line 1 in file heap_template.s
+   Uses
+      None
+Comment: .text unused
+_kalloc 00000002
+
+Symbol: _kalloc
+   Definitions
+      At line 39 in file heap_template.s
+   Uses
+      At line 38 in file heap_template.s
+Comment: _kalloc used once
+_kfree 00000004
+
+Symbol: _kfree
+   Definitions
+      At line 49 in file heap_template.s
+   Uses
+      At line 48 in file heap_template.s
+Comment: _kfree used once
+_kinit 00000000
+
+Symbol: _kinit
+   Definitions
+      At line 29 in file heap_template.s
+   Uses
+      At line 28 in file heap_template.s
+Comment: _kinit used once
+4 symbols
+
+
+
+ARM Macro Assembler    Page 1 Alphabetic symbol ordering
+Absolute symbols
+
+HEAP_BOT 20004FE0
+
+Symbol: HEAP_BOT
+   Definitions
+      At line 7 in file heap_template.s
+   Uses
+      None
+Comment: HEAP_BOT unused
+HEAP_TOP 20001000
+
+Symbol: HEAP_TOP
+   Definitions
+      At line 6 in file heap_template.s
+   Uses
+      None
+Comment: HEAP_TOP unused
+INVALID FFFFFFFF
+
+Symbol: INVALID
+   Definitions
+      At line 16 in file heap_template.s
+   Uses
+      None
+Comment: INVALID unused
+MAX_SIZE 00004000
+
+Symbol: MAX_SIZE
+   Definitions
+      At line 8 in file heap_template.s
+   Uses
+      None
+Comment: MAX_SIZE unused
+MCB_BOT 20006BFE
+
+Symbol: MCB_BOT
+   Definitions
+      At line 12 in file heap_template.s
+   Uses
+      None
+Comment: MCB_BOT unused
+MCB_ENT_SZ 00000002
+
+Symbol: MCB_ENT_SZ
+   Definitions
+      At line 13 in file heap_template.s
+   Uses
+      None
+Comment: MCB_ENT_SZ unused
+MCB_TOP 20006800
+
+Symbol: MCB_TOP
+   Definitions
+      At line 11 in file heap_template.s
+   Uses
+      None
+Comment: MCB_TOP unused
+MCB_TOTAL 00000200
+
+Symbol: MCB_TOTAL
+
+
+
+ARM Macro Assembler    Page 2 Alphabetic symbol ordering
+Absolute symbols
+
+   Definitions
+      At line 14 in file heap_template.s
+   Uses
+      None
+Comment: MCB_TOTAL unused
+MIN_SIZE 00000020
+
+Symbol: MIN_SIZE
+   Definitions
+      At line 9 in file heap_template.s
+   Uses
+      None
+Comment: MIN_SIZE unused
+9 symbols
+348 symbols in table
